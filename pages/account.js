@@ -2,7 +2,7 @@ import Layout from '../components/Layout'
 import Link from 'next/link'
 
 export default function Account() {
-  // W przyszłości: pobierz dane zalogowanego użytkownika z backendu
+  // Tymczasowe dane użytkownika (na potrzeby frontendu)
   const fakeUser = {
     email: 'uzytkownik@isprzedamto.pl',
     imie: 'Janek',
@@ -29,5 +29,3 @@ export default function Account() {
     </Layout>
   )
 }
-Commit changes
-[✔] Create a new branch → zostaw wyłączone
