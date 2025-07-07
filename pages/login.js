@@ -10,7 +10,6 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    // Tu będzie logowanie do backendu
     if (!email || !password) {
       setError('Wszystkie pola są wymagane')
       return
@@ -69,4 +68,4 @@ export default function Login() {
       </div>
     </Layout>
   )
-          }
+              }
