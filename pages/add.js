@@ -10,8 +10,7 @@ export default function Add() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    alert(`Ogłoszenie dodane: ${title}`)
-    // tu w przyszłości zapiszesz ogłoszenie do bazy
+    alert(`Dodano ogłoszenie: ${title}`)
     setTitle('')
     setDescription('')
     setPrice('')
@@ -87,4 +86,4 @@ export default function Add() {
       </form>
     </Layout>
   )
-}
+                }
