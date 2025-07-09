@@ -1,63 +1,50 @@
 import Layout from '../components/Layout'
-import Filters from '../components/Filters'
-import { useState } from 'react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
-  const [filters, setFilters] = useState({})
-  const ads = [
-    {
-      id: 1,
-      title: 'Nissan Almera 1.5 benzyna 115KM',
-      year: 2006,
-      mileage: 152000,
-      fuel: 'benzyna',
-      price: 9900,
-      location: 'Warszawa',
-    },
-    {
-      id: 2,
-      title: 'Volkswagen Golf 1.9 TDI 5D',
-      year: 2008,
-      mileage: 245000,
-      fuel: 'diesel',
-      price: 12400,
-      location: 'Łódź',
-    },
-  ]
+  const [ads, setAds] = useState([])
 
-  const filteredAds = ads.filter(ad => {
-    if (filters.brand && !ad.title.toLowerCase().includes(filters.brand.toLowerCase())) return false
-    if (filters.model && !ad.title.toLowerCase().includes(filters.model.toLowerCase())) return false
-    if (filters.yearFrom && ad.year < parseInt(filters.yearFrom)) return false
-    if (filters.yearTo && ad.year > parseInt(filters.yearTo)) return false
-    if (filters.priceFrom && ad.price < parseInt(filters.priceFrom)) return false
-    if (filters.priceTo && ad.price > parseInt(filters.priceTo)) return false
-    if (filters.mileageFrom && ad.mileage < parseInt(filters.mileageFrom)) return false
-    if (filters.mileageTo && ad.mileage > parseInt(filters.mileageTo)) return false
-    if (filters.fuel && ad.fuel !== filters.fuel) return false
-    return true
-  })
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem('ads') || '[]')
+    setAds(stored.reverse().slice(0, 8)) // Pokazuje 8 najnowszych
+  }, [])
 
   return (
     <Layout>
-      <Filters onFilter={setFilters} />
+      <div className="max-w-6xl mx-auto px-4 py-6">
 
-      <h2 className="text-xl font-bold mb-4">🆕 Najnowsze ogłoszenia</h2>
-      <div className="space-y-4">
-        {filteredAds.length === 0 ? (
-          <p>Brak ogłoszeń pasujących do filtrów.</p>
-        ) : (
-          filteredAds.map(ad => (
-            <div key={ad.id} className="p-4 bg-white border rounded shadow">
-              <h3 className="text-lg font-semibold">{ad.title}</h3>
-              <p className="text-sm text-gray-600">
-                Rok: {ad.year} • Przebieg: {ad.mileage.toLocaleString()} km • {ad.fuel}
-              </p>
-              <p className="font-bold text-blue-700">{ad.price.toLocaleString()} zł</p>
-              <p className="text-sm text-gray-500">{ad.location}</p>
-            </div>
-          ))
-        )}
+        <h2 className="text-2xl font-bold mb-4">🆕 Świeżo dodane</h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {ads.length === 0 && (
+            <p className="text-gray-500 col-span-full">Brak ogłoszeń do wyświetlenia.</p>
+          )}
+
+          {ads.map(ad => (
+            <Link href={`/ad/${ad.id}`} key={ad.id}>
+              <div className="border rounded p-3 hover:shadow hover:bg-gray-50 transition cursor-pointer">
+                {ad.photos && ad.photos.length > 0 ? (
+                  <div className="mb-2">
+                    <div className="w-full h-32 bg-gray-100 flex items-center justify-center text-sm text-gray-500">
+                      {ad.photos[0]}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mb-2 w-full h-32 bg-gray-100 flex items-center justify-center text-sm text-gray-400">
+                    brak zdjęcia
+                  </div>
+                )}
+
+                <h3 className="font-semibold truncate">{ad.title}</h3>
+                <p className="text-sm text-gray-600">{ad.brand} | {ad.year}</p>
+                <p className="text-blue-700 font-bold">{parseInt(ad.price).toLocaleString()} zł</p>
+                <p className="text-xs text-gray-400">{ad.location} | {ad.date}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
       </div>
     </Layout>
   )
