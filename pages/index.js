@@ -1,51 +1,71 @@
-import Layout from '../components/Layout'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import Head from 'next/head';
 
 export default function Home() {
-  const [ads, setAds] = useState([])
-
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('ads') || '[]')
-    setAds(stored.reverse().slice(0, 8)) // Pokazuje 8 najnowszych
-  }, [])
-
   return (
-    <Layout>
-      <div className="max-w-6xl mx-auto px-4 py-6">
+    <>
+      <Head>
+        <title>isprzedamto.pl - Twoje miejsce na darmowe ogłoszenia</title>
+      </Head>
 
-        <h2 className="text-2xl font-bold mb-4">🆕 Świeżo dodane</h2>
+      <main className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        {/* Pasek wyszukiwania */}
+        <div className="flex flex-col sm:flex-row items-center gap-2 mb-6">
+          <input
+            type="text"
+            placeholder="Czego szukasz?"
+            className="flex-grow border border-gray-300 rounded px-4 py-2 w-full sm:w-auto"
+          />
+          <input
+            type="text"
+            placeholder="Cała Polska"
+            className="border border-gray-300 rounded px-4 py-2 w-full sm:w-auto"
+          />
+          <select className="border border-gray-300 rounded px-4 py-2">
+            <option>Cały kraj</option>
+            <option>+5 km</option>
+            <option>+15 km</option>
+            <option>+30 km</option>
+            <option>+50 km</option>
+            <option>+100 km</option>
+          </select>
+          <button className="bg-orange-500 text-white px-5 py-2 rounded">
+            Filtruj
+          </button>
+          <button className="bg-blue-600 text-white px-5 py-2 rounded">
+            Szukaj
+          </button>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {ads.length === 0 && (
-            <p className="text-gray-500 col-span-full">Brak ogłoszeń do wyświetlenia.</p>
-          )}
-
-          {ads.map(ad => (
-            <Link href={`/ad/${ad.id}`} key={ad.id}>
-              <div className="border rounded p-3 hover:shadow hover:bg-gray-50 transition cursor-pointer">
-                {ad.photos && ad.photos.length > 0 ? (
-                  <div className="mb-2">
-                    <div className="w-full h-32 bg-gray-100 flex items-center justify-center text-sm text-gray-500">
-                      {ad.photos[0]}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mb-2 w-full h-32 bg-gray-100 flex items-center justify-center text-sm text-gray-400">
-                    brak zdjęcia
-                  </div>
-                )}
-
-                <h3 className="font-semibold truncate">{ad.title}</h3>
-                <p className="text-sm text-gray-600">{ad.brand} | {ad.year}</p>
-                <p className="text-blue-700 font-bold">{parseInt(ad.price).toLocaleString()} zł</p>
-                <p className="text-xs text-gray-400">{ad.location} | {ad.date}</p>
-              </div>
-            </Link>
+        {/* Kategorie */}
+        <h2 className="text-2xl font-semibold mb-4">Kategorie</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
+          {[
+            'Motoryzacja',
+            'Dom i ogród',
+            'Elektronika',
+            'Moda',
+            'Praca',
+            'Dla dzieci',
+            'Zdrowie i uroda',
+            'Sport i hobby',
+            'Zwierzęta',
+            'Nieruchomości',
+            'Usługi i firmy',
+            'Oddam za darmo',
+          ].map((category) => (
+            <button
+              key={category}
+              className="border border-blue-500 text-blue-500 font-medium rounded px-3 py-2 hover:bg-blue-50"
+            >
+              {category}
+            </button>
           ))}
         </div>
 
-      </div>
-    </Layout>
-  )
+        {/* Świeżo dodane */}
+        <h2 className="text-2xl font-semibold mb-4">📌 Świeżo dodane</h2>
+        <p className="text-gray-500">Brak ogłoszeń do wyświetlenia.</p>
+      </main>
+    </>
+  );
 }
