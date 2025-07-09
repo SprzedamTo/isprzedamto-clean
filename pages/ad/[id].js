@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
+import ChatModal from '../../components/ChatModal'
 
 export default function AdDetail() {
   const router = useRouter()
   const { id } = router.query
   const [ad, setAd] = useState(null)
+  const [showChat, setShowChat] = useState(false)
 
   useEffect(() => {
     const ads = JSON.parse(localStorage.getItem('ads') || '[]')
@@ -35,8 +37,17 @@ export default function AdDetail() {
 
         <p className="mb-4">{ad.description}</p>
 
-        <button className="bg-blue-600 text-white px-4 py-2 rounded">💬 Napisz do sprzedawcy</button>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+          onClick={() => setShowChat(true)}
+        >
+          💬 Napisz do sprzedawcy
+        </button>
       </div>
+
+      {showChat && (
+        <ChatModal onClose={() => setShowChat(false)} adTitle={ad.title} />
+      )}
     </Layout>
   )
-    }
+}
