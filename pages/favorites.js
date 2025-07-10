@@ -1,33 +1,45 @@
-import Layout from '../components/Layout'
+import { useEffect, useState } from 'react';
+import Layout from '../components/Layout';
+import Link from 'next/link';
 
 export default function Favorites() {
-  const favoriteAds = [
-    {
-      id: 1,
-      title: 'PlayStation 5',
-      price: '1 999 zł',
-      location: 'Łódź',
-    },
-    {
-      id: 2,
-      title: 'iPhone 13 Pro',
-      price: '3 500 zł',
-      location: 'Wrocław',
-    },
-  ]
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem('favorites') || '[]');
+    setFavorites(stored);
+  }, []);
 
   return (
     <Layout>
-      <h1 className="text-2xl font-bold mb-4">❤️ Ulubione ogłoszenia</h1>
-      <div className="space-y-4">
-        {favoriteAds.map(ad => (
-          <div key={ad.id} className="p-4 border rounded bg-white shadow">
-            <h2 className="text-lg font-semibold">{ad.title}</h2>
-            <p className="text-sm text-gray-600">{ad.location}</p>
-            <p className="text-blue-700 font-bold">{ad.price}</p>
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        <h2 className="text-2xl font-bold mb-4">💖 Ulubione ogłoszenia</h2>
+
+        {favorites.length === 0 ? (
+          <p className="text-gray-500">Brak zapisanych ogłoszeń.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {favorites.map(ad => (
+              <Link href={`/ad/${ad.id}`} key={ad.id}>
+                <div className="border rounded p-3 hover:shadow cursor-pointer bg-white">
+                  {ad.photos && ad.photos.length > 0 ? (
+                    <div className="mb-2 w-full h-32 bg-gray-100 flex items-center justify-center text-sm text-gray-500">
+                      {ad.photos[0]}
+                    </div>
+                  ) : (
+                    <div className="mb-2 w-full h-32 bg-gray-100 flex items-center justify-center text-sm text-gray-400">
+                      brak zdjęcia
+                    </div>
+                  )}
+                  <h3 className="font-semibold truncate">{ad.title}</h3>
+                  <p className="text-sm text-gray-600">{ad.brand} | {ad.year}</p>
+                  <p className="text-blue-700 font-bold">{parseInt(ad.price).toLocaleString()} zł</p>
+                </div>
+              </Link>
+            ))}
           </div>
-        ))}
+        )}
       </div>
     </Layout>
-  )
-                         }
+  );
+}
