@@ -1,9 +1,15 @@
 import Head from 'next/head';
 import CategoryList from '../components/CategoryList';
-import { useState } from 'react';
+import AdCard from '../components/AdCard';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
-  const [search, setSearch] = useState('');
+  const [ads, setAds] = useState([]);
+
+  useEffect(() => {
+    const storedAds = JSON.parse(localStorage.getItem('ads')) || [];
+    setAds(storedAds.reverse().slice(0, 8));
+  }, []);
 
   return (
     <>
@@ -23,22 +29,22 @@ export default function Home() {
           </a>
         </div>
 
-        {/* Wyszukiwarka */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mb-6">
-          <input
-            type="text"
-            placeholder="Czego szukasz?"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border rounded px-4 py-2 w-full sm:w-1/2"
-          />
-          <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
-            🔍 Szukaj
-          </button>
-        </div>
-
         {/* Kategorie */}
         <CategoryList />
+
+        {/* Ogłoszenia */}
+        <div className="mt-10">
+          <h2 className="text-2xl font-semibold mb-4">🆕 Świeżo dodane</h2>
+          {ads.length === 0 ? (
+            <p className="text-gray-500">Brak ogłoszeń do wyświetlenia.</p>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+              {ads.map((ad, idx) => (
+                <AdCard key={idx} ad={ad} />
+              ))}
+            </div>
+          )}
+        </div>
       </main>
     </>
   );
