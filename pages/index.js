@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import CategoryList from '@/components/CategoryList';
-import AdCard from '@/components/AdCard';
+import CategoryList from '../components/CategoryList';
+import AdCard from '../components/AdCard';
 import { useState, useEffect } from 'react';
 
 export default function Home() {
