@@ -1,45 +1,49 @@
 import { useEffect, useState } from 'react';
-import Layout from '../components/Layout';
-import Link from 'next/link';
+import Head from 'next/head';
+import AdCard from '../components/AdCard';
 
 export default function Account() {
   const [ads, setAds] = useState([]);
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('ads') || '[]');
+    const stored = JSON.parse(localStorage.getItem('ads')) || [];
     setAds(stored);
   }, []);
 
+  const handleDelete = (index) => {
+    const updated = [...ads];
+    updated.splice(index, 1);
+    setAds(updated);
+    localStorage.setItem('ads', JSON.stringify(updated));
+  };
+
   return (
-    <Layout>
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <h2 className="text-2xl font-bold mb-4">📂 Moje ogłoszenia</h2>
+    <>
+      <Head>
+        <title>Moje konto - isprzedamto.pl</title>
+      </Head>
+
+      <main className="max-w-5xl mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">🧑 Moje ogłoszenia</h1>
 
         {ads.length === 0 ? (
-          <p className="text-gray-500">Brak dodanych ogłoszeń.</p>
+          <p className="text-gray-500">Nie masz jeszcze żadnych ogłoszeń.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {ads.map(ad => (
-              <Link href={`/ad/${ad.id}`} key={ad.id}>
-                <div className="border rounded p-3 hover:shadow cursor-pointer bg-white">
-                  {ad.photos && ad.photos.length > 0 ? (
-                    <div className="mb-2 w-full h-32 bg-gray-100 flex items-center justify-center text-sm text-gray-500">
-                      {ad.photos[0]}
-                    </div>
-                  ) : (
-                    <div className="mb-2 w-full h-32 bg-gray-100 flex items-center justify-center text-sm text-gray-400">
-                      brak zdjęcia
-                    </div>
-                  )}
-                  <h3 className="font-semibold truncate">{ad.title}</h3>
-                  <p className="text-sm text-gray-600">{ad.brand} | {ad.year}</p>
-                  <p className="text-blue-700 font-bold">{parseInt(ad.price).toLocaleString()} zł</p>
-                </div>
-              </Link>
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {ads.map((ad, idx) => (
+              <div key={idx} className="relative group">
+                <AdCard ad={ad} />
+                <button
+                  onClick={() => handleDelete(idx)}
+                  className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+                >
+                  Usuń
+                </button>
+              </div>
             ))}
           </div>
         )}
-      </div>
-    </Layout>
+      </main>
+    </>
   );
 }
