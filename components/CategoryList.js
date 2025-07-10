@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaCar, FaHome, FaTv, FaTshirt, FaBriefcase, FaChild, FaHeart, FaDumbbell, FaDog, FaBuilding, FaTools, FaGift } from 'react-icons/fa';
 
 const categories = [
@@ -16,20 +15,18 @@ const categories = [
   { name: 'Oddam za darmo', icon: <FaGift /> },
 ];
 
-const CategoryList = () => {
+export default function CategoryList() {
   return (
-    <div className="category-wrapper py-4">
-      <h2 className="text-xl font-semibold mb-3">Kategorie</h2>
+    <div className="py-6">
+      <h2 className="text-xl font-bold mb-4">Kategorie</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {categories.map((cat, index) => (
-          <div key={index} className="flex items-center gap-2 p-3 bg-gray-100 rounded hover:bg-blue-100 cursor-pointer">
-            <span className="text-blue-700 text-lg">{cat.icon}</span>
-            <span className="text-sm font-medium">{cat.name}</span>
+        {categories.map((cat, idx) => (
+          <div key={idx} className="flex items-center gap-2 p-3 bg-gray-100 rounded hover:bg-blue-100 cursor-pointer">
+            <div className="text-blue-700 text-lg">{cat.icon}</div>
+            <div className="text-sm font-medium">{cat.name}</div>
           </div>
         ))}
       </div>
     </div>
   );
-};
-
-export default CategoryList;
+}
