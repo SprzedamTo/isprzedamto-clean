@@ -2,7 +2,7 @@ import Layout from '../components/Layout';
 import CategoryList from '../components/CategoryList';
 import Filters from '../components/Filters';
 import AdCard from '../components/AdCard';
-import ads from '../data/ads';
+import ads from '../data/ads'; // <-- ŚCIEŻKA BEZ UKOŚNIKA NA POCZĄTKU
 
 export default function Home() {
   return (
@@ -50,6 +50,7 @@ export default function Home() {
           </span>
           Świeżo dodane
         </h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {ads && ads.length > 0 ? (
             ads.map((ad) => <AdCard key={ad.id} ad={ad} />)
