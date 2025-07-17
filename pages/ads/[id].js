@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import Layout from '@/components/Layout';
-import ads from '@/data/ads';
+import Layout from '../../components/Layout';
+import ads from '../../data/ads';
 
 export default function AdDetails() {
   const router = useRouter();
@@ -32,4 +32,4 @@ export default function AdDetails() {
       </div>
     </Layout>
   );
-    }
+}
