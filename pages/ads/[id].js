@@ -1,17 +1,21 @@
+// pages/ads/[id].js
+
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import ads from '../../data/ads';
 
-export default function AdDetails() {
+export default function AdDetail() {
   const router = useRouter();
   const { id } = router.query;
-
-  const ad = ads.find((item) => item.id === parseInt(id));
+  const ad = ads.find((a) => a.id === parseInt(id));
 
   if (!ad) {
     return (
       <Layout>
-        <div className="p-6 text-center text-gray-500">Ogłoszenie nie znalezione.</div>
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <h1 className="text-2xl font-semibold mb-4">Ogłoszenie nie znalezione</h1>
+          <p className="text-gray-600">Nie znaleziono ogłoszenia o podanym ID.</p>
+        </div>
       </Layout>
     );
   }
@@ -19,16 +23,14 @@ export default function AdDetails() {
   return (
     <Layout>
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <img src={ad.image} alt={ad.title} className="w-full h-80 object-cover mb-4 rounded" />
-        <h1 className="text-2xl font-semibold mb-2">{ad.title}</h1>
-        <p className="text-gray-700 mb-4">{ad.description}</p>
-        <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-          <p><strong>Cena:</strong> {ad.price}</p>
-          <p><strong>Rok:</strong> {ad.year || '—'}</p>
-          <p><strong>Przebieg:</strong> {ad.mileage || '—'}</p>
-          <p><strong>Silnik:</strong> {ad.engine || '—'}</p>
-          <p><strong>Lokalizacja:</strong> {ad.location}</p>
-        </div>
+        <h1 className="text-3xl font-bold mb-4">{ad.title}</h1>
+        <img src={ad.image} alt={ad.title} className="w-full h-auto rounded-md mb-6" />
+        <p className="text-gray-700 mb-2">{ad.description}</p>
+        <p className="text-lg font-semibold mb-2">{ad.price}</p>
+        <p className="text-gray-600 mb-2">Lokalizacja: {ad.location}</p>
+        {ad.year && <p className="text-gray-600 mb-2">Rok: {ad.year}</p>}
+        {ad.engine && <p className="text-gray-600 mb-2">Silnik: {ad.engine}</p>}
+        {ad.mileage && <p className="text-gray-600 mb-2">Przebieg: {ad.mileage}</p>}
       </div>
     </Layout>
   );
