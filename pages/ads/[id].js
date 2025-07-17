@@ -1,5 +1,3 @@
-// pages/ads/[id].js
-
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import ads from '../../data/ads';
